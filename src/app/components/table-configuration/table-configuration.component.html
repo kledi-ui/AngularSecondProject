@@ -1,0 +1,41 @@
+<div class="p-4">
+  <a class="btn btn-primary mb-3 " [routerLink]="['/create']">
+    Create
+  </a>
+  <a class="btn btn-danger mb-3 text-white ml-3" *ngIf="selectedBooks.length > 0" (click)="deleteSelectedFiles()">
+    Delete Selected Files
+  </a>
+  <a class="btn btn-success mb-3 text-white ml-3"  *ngIf="selectedBooks.length > 0">
+    Change Category 
+  </a>
+    <table id="example" datatable [dtOptions]="dtOptions" class="table">
+        <thead>
+          <tr>
+            <th></th>
+            <th>Titulli</th>
+            <th>Pershkrimi</th>
+            <th>Autori</th>
+            <th>Kategoria</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let book of listOfBooks">
+            <td><input type="checkbox" (click)="toggleClick(book)"  /></td>
+            <td>{{book.bookTitle |uppercase }}</td>
+            <td>{{book.bookDescription | lowercase }}</td>
+            <td>{{book.bookAuthor | titlecase  }}</td>
+            <td>{{book.bookCategory}}</td>
+            <td> <a class="btn btn-warning mr-2"  [routerLink]="['/update',book.id]">Update</a> 
+              <button type="button" class="btn btn-danger" >
+              Delete
+            </button> </td>
+          </tr>
+          
+        </tbody>
+      </table>
+      
+      
+</div>
+
+

@@ -1,0 +1,43 @@
+<div class="container mt-3">
+  <div class="display-4 mb-3">
+    Create New Record
+</div>
+<div class="btn btn-secondary mb-3" (click)='goHome()'>
+  Back
+</div>
+    <form (ngSubmit)="submitBook()">
+        <div class="form-group" >
+          <label class="font-weight-bold">Titulli</label>
+          <input type="text"  class="form-control" name="title" [(ngModel)]="title" ngModel required >
+        
+
+        </div>
+        <div class="form-group">
+          <label class="font-weight-bold">Pershkrimi</label>
+          <input type="text" class="form-control" name="description" [(ngModel)]="description" required>
+        </div>
+        <div class="form-group">
+            <label class="font-weight-bold">Autori</label>
+            <input type="text" class="form-control" name="author" [(ngModel)]="author" required>
+          </div>
+          <div class="form-group">
+            <label class="font-weight-bold" >Kategoria</label>
+            <select class="form-control" name="category" [(ngModel)]="category" required>
+                <option>Roman</option>
+                <option>Klasik</option>
+                <option>Biografi</option>
+                <option>Informatik</option>
+
+            </select>
+          
+          </div>
+         
+          <div class="form-group">
+            <label class="font-weight-bold" >Data e publikimit</label>
+            <input type="date" class="form-control" name="publishedDate" [(ngModel)]="publishedDate" required>
+            
+          </div>
+        
+        <input type="submit" class="btn btn-primary" value="Create New Record"/>
+      </form>
+</div>

@@ -63,10 +63,35 @@ export class TableConfigurationComponent implements OnInit {
     if (confirmDialog == true) {
       // update local storage
       this.bookService.deleteSelectedFiles(this.selectedBooks);
+      // update ui 
       this.listOfBooks = this.bookService.getAllBooks();
+      // empty selected books
       this.selectedBooks = [];
     }
 
+  }
+
+
+
+  // filtered array after deleting a single record
+
+  filteredArray(filteredArray:IBook[]):void{
+    // update list of books on ui
+    this.listOfBooks=filteredArray;
+   // set local storage with the new filtered arrays
+    localStorage.setItem('BookStore',JSON.stringify(this.listOfBooks));
+  }
+
+  // filtered array after changing the category on specific records
+
+  filteredArrayCategory(filteredArray:IBook[]):void{
+    // update list of books on ui
+    this.listOfBooks=filteredArray;
+    // empty selected array list
+    this.selectedBooks = [];
+    // set local storage with the new filtered arrays
+    localStorage.setItem('BookStore',JSON.stringify(this.listOfBooks));
+    
   }
 
 

@@ -5,6 +5,9 @@
     <div class="btn btn-secondary mb-3" (click)='goHome()'>
        Back
     </div>
+    <div *ngIf="alertMessage" class="alert alert-danger" role="alert" >
+      Please check all the fields below before updateing
+    </div>
     <form (ngSubmit)="updateBook()">
         <div class="form-group">
           <label class="font-weight-bold">Titulli</label>
@@ -25,6 +28,7 @@
                 <option>Roman</option>
                 <option>Klasik</option>
                 <option>Biografi</option>
+                <option>Informatik</option>
             </select>
           </div>
          

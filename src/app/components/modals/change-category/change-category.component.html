@@ -1,0 +1,29 @@
+<ng-template #content let-c="close" let-d="dismiss">
+  <div class="modal-header bg-success text-white">
+    <h4 class="modal-title" id="modal-basic-title">Change Category</h4>
+    <button type="button" class="close text-white" aria-label="Close" (click)="d('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <div class="alert alert-danger" role="alert" *ngIf="alertMessage">
+      Please Select a Category
+    </div>
+    <div class="form-group">
+      <label class="font-weight-bold">Kategoria</label>
+      <select class="form-control" name="category" [(ngModel)]="category" required>
+        <option>Roman</option>
+        <option>Klasik</option>
+        <option>Biografi</option>
+        <option>Informatik</option>
+      </select>
+    </div>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-outline-success" (click)="onChange()">Change All
+      Category</button>
+  </div>
+</ng-template>
+
+<button class="btn btn-success mb-3 text-white ml-3" (click)="open(content)">Change Category</button>
+<!-- d('Cross click') -->

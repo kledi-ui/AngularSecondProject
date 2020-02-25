@@ -5,11 +5,18 @@
 <div class="btn btn-secondary mb-3" (click)='goHome()'>
   Back
 </div>
+
+  <div *ngIf="alertMessage" class="alert alert-danger" role="alert" >
+    Please check all the fields below
+  </div>
+
+
     <form (ngSubmit)="submitBook()">
+    
         <div class="form-group" >
           <label class="font-weight-bold">Titulli</label>
           <input type="text"  class="form-control" name="title" [(ngModel)]="title" ngModel required >
-        
+          
 
         </div>
         <div class="form-group">

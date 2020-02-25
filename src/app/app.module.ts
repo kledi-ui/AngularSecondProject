@@ -9,6 +9,8 @@ import { CreateComponent } from './components/pages/create/create.component';
 import { UpdateComponent } from './components/pages/update/update.component';
 import { DeleteSingleComponent } from './components/modals/delete-single/delete-single.component';
 import {FormsModule} from '@angular/forms';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { ChangeCategoryComponent } from './components/modals/change-category/change-category.component';
 
 
 @NgModule({
@@ -19,13 +21,15 @@ import {FormsModule} from '@angular/forms';
     CreateComponent,
     UpdateComponent,
     DeleteSingleComponent,
+    ChangeCategoryComponent,
     
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     DataTablesModule,
-    FormsModule
+    FormsModule,
+    NgbModule
   ],
   providers: [],
   bootstrap: [AppComponent]

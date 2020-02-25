@@ -12,8 +12,10 @@ export class BookServiceService {
 
   }
 
+  // get all books from local storage to update ui
   getAllBooks(): IBook[] {
 
+    // if local storage is null set local storage and return empty array
     if (JSON.parse(localStorage.getItem("BookStore")) === null) {
       localStorage.setItem("BookStore", JSON.stringify([]));
       return [];
@@ -52,7 +54,7 @@ export class BookServiceService {
 
   }
 
-  
+
   deleteSelectedFiles(selectedBooks: IBook[]) {
 
     let books = [];
@@ -69,6 +71,36 @@ export class BookServiceService {
     localStorage.setItem("BookStore", JSON.stringify(filteredArray));
   }
 
+  deleteOneBook(book: IBook): IBook[] {
+
+
+    let books = [];
+    books = JSON.parse(localStorage.getItem("BookStore"));
+    // filter through books and return all elements not equa to book
+    const filterdBooks = books.filter(element => {
+      return element.id !== book.id
+    });
+    return filterdBooks;
+  }
+  changeCategory(selectedBooks: IBook[]): IBook[] {
+    let books = [];
+    books = JSON.parse(localStorage.getItem("BookStore"));
+
+    // loop through selected books and intial books
+    const filteredArray = books.map(book => {
+      selectedBooks.map(book2 => {
+        if (book2.id === book.id) {
+          book.bookCategory = book2.bookCategory
+        }
+      })
+      return book
+    })
+
+    return filteredArray;
+
+  }
+
+  // Navigate through code to home route
   goHome(): void {
     this.router.navigateByUrl('/');
   }

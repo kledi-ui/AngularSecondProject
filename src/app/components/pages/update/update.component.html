@@ -5,38 +5,53 @@
     <div class="btn btn-secondary mb-3" (click)='goHome()'>
        Back
     </div>
-    <div *ngIf="alertMessage" class="alert alert-danger" role="alert" >
-      Please check all the fields below before updateing
-    </div>
-    <form (ngSubmit)="updateBook()">
-        <div class="form-group">
-          <label class="font-weight-bold">Titulli</label>
-          <input type="text" class="form-control" name="title" value="title" [(ngModel)]="title">
 
+    <form [formGroup]="updateForm" (ngSubmit)="updateBook()">
+      <div class="form-group" >
+        <label class="font-weight-bold">Titulli</label>
+        <input  type="text"  class="form-control" name="bookTitle" [formControl]="title" value="title" required >
+        <div class="alert alert-danger mt-2" [hidden]="title.valid || title.untouched">
+          Book title is required
+        </div>
+
+      </div>
+      <div class="form-group">
+        <label class="font-weight-bold">Pershkrimi</label>
+        <input type="text" class="form-control" name="bookDescription" [formControl]="description" value="description" required>
+        <div class="alert alert-danger mt-2" [hidden]="description.valid || description.untouched">
+          Please check book description
+        </div>
+      </div>
+      <div class="form-group">
+          <label class="font-weight-bold">Autori</label>
+          <input type="text" class="form-control" name="author" [formControl]="author" value="author" required>
+          <div class="alert alert-danger mt-2" [hidden]="author.valid || author.untouched">
+            Please check author name 
+          </div>
         </div>
         <div class="form-group">
-          <label class="font-weight-bold">Pershkrimi</label>
-          <input type="text" class="form-control "  name="description" value="description" [(ngModel)]="description">
+          <label class="font-weight-bold" >Kategoria</label>
+          <select class="form-control" name="category" [formControl]="category"  value="category" required>
+              <option>Roman</option>
+              <option>Klasik</option>
+              <option>Biografi</option>
+              <option>Informatik</option>
+
+          </select>
+          <div class="alert alert-danger mt-2" [hidden]="category.valid || category.untouched">
+            Please choose a category
+          </div>
+          
         </div>
+       
         <div class="form-group">
-            <label class="font-weight-bold">Autori</label>
-            <input type="text" class="form-control" name="author" value="author" [(ngModel)]="author">
+          <label class="font-weight-bold" >Data e publikimit</label>
+          <input type="date" class="form-control" name="publishedDate" value="publishedDate"  [formControl]="publishedDate"  required>
+          <div class="alert alert-danger mt-2" [hidden]="publishedDate.valid || publishedDate.untouched">
+            Pick a date
           </div>
-          <div class="form-group">
-            <label class="font-weight-bold" >Kategoria</label>
-            <select class="form-control" name="category" value="category" [(ngModel)]="category">
-                <option>Roman</option>
-                <option>Klasik</option>
-                <option>Biografi</option>
-                <option>Informatik</option>
-            </select>
-          </div>
-         
-          <div class="form-group">
-            <label class="font-weight-bold" >Data e publikimit</label>
-            <input type="date" class="form-control" name="publishedDate" value="publishedDate" [(ngModel)]="publishedDate">
-          </div>
+        </div>
         
-        <input type="submit" class="btn btn-warning" value="Update Record"/>
+        <input type="submit" class="btn btn-warning" value="Update Record" [disabled]="!updateForm.valid"/>
       </form>
 </div>

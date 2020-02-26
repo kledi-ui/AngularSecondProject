@@ -6,45 +6,55 @@
   Back
 </div>
 
-  <div *ngIf="alertMessage" class="alert alert-danger" role="alert" >
-    Please check all the fields below
-  </div>
+ 
 
-
-    <form (ngSubmit)="submitBook()">
+    <form [formGroup]="createForm" (ngSubmit)="submitBook()"  >
     
         <div class="form-group" >
           <label class="font-weight-bold">Titulli</label>
-          <input type="text"  class="form-control" name="title" [(ngModel)]="title" ngModel required >
-          
+          <input  type="text"  class="form-control" name="bookTitle" [formControl]="title"  required >
+          <div class="alert alert-danger mt-2" [hidden]="title.valid || title.untouched">
+            Book title is required
+          </div>
 
         </div>
         <div class="form-group">
           <label class="font-weight-bold">Pershkrimi</label>
-          <input type="text" class="form-control" name="description" [(ngModel)]="description" required>
+          <input type="text" class="form-control" name="bookDescription" [formControl]="description"  required>
+          <div class="alert alert-danger mt-2" [hidden]="description.valid || description.untouched">
+            Please check book description
+          </div>
         </div>
         <div class="form-group">
             <label class="font-weight-bold">Autori</label>
-            <input type="text" class="form-control" name="author" [(ngModel)]="author" required>
+            <input type="text" class="form-control" name="author" [formControl]="author"  required>
+            <div class="alert alert-danger mt-2" [hidden]="author.valid || author.untouched">
+              Please check author name 
+            </div>
           </div>
           <div class="form-group">
             <label class="font-weight-bold" >Kategoria</label>
-            <select class="form-control" name="category" [(ngModel)]="category" required>
+            <select class="form-control" name="category" [formControl]="category"  required>
                 <option>Roman</option>
                 <option>Klasik</option>
                 <option>Biografi</option>
                 <option>Informatik</option>
 
             </select>
-          
+            <div class="alert alert-danger mt-2" [hidden]="category.valid || category.untouched">
+              Please choose a category
+            </div>
+            
           </div>
          
           <div class="form-group">
             <label class="font-weight-bold" >Data e publikimit</label>
-            <input type="date" class="form-control" name="publishedDate" [(ngModel)]="publishedDate" required>
-            
+            <input type="date" class="form-control" name="publishedDate" [formControl]="publishedDate"  required>
+            <div class="alert alert-danger mt-2" [hidden]="publishedDate.valid || publishedDate.untouched">
+              Pick a date
+            </div>
           </div>
         
-        <input type="submit" class="btn btn-primary" value="Create New Record"/>
+        <input type="submit" class="btn btn-primary" value="Create New Record" [disabled]="!createForm.valid"/>
       </form>
 </div>

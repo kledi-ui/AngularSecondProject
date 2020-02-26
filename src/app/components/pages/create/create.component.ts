@@ -1,5 +1,8 @@
-import { Component, OnInit, EventEmitter, Output } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BookServiceService } from '../../../services/book-service.service';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+
+
 
 @Component({
   selector: 'app-create',
@@ -8,20 +11,21 @@ import { BookServiceService } from '../../../services/book-service.service';
 })
 export class CreateComponent implements OnInit {
 
-  @Output() addBook: EventEmitter<any> = new EventEmitter();
+  title = new FormControl('', [Validators.required])
+  description = new FormControl('', [Validators.required])
+  author = new FormControl('', [Validators.required])
+  publishedDate = new FormControl('', [Validators.required])
+  category = new FormControl('', [Validators.required])
 
-  title: string;
-  description: string;
-  author: string;
-  publishedDate: string;
-  category: string;
-  alertMessage: boolean = false;
-  
+  createForm: FormGroup = this.builder.group({
+    title: this.title,
+    description: this.description,
+    author: this.author,
+    publishedDate: this.publishedDate,
+    category: this.category
+  });
 
-  constructor(private bookService: BookServiceService) {
-  }
-
-  ngOnInit(): void {
+  constructor(private builder: FormBuilder, private bookService: BookServiceService) {
 
   }
 
@@ -31,38 +35,31 @@ export class CreateComponent implements OnInit {
     // Generate Random Unique ID
     let id = '_' + Math.random().toString(36).substr(2, 9);
 
-    // Stop here if form is invalid
+    // construct new book object
 
-    if (this.title === undefined 
-       || 
-       this.description === undefined 
-       || this.author === undefined 
-       || this.publishedDate === undefined
-       || this.category === undefined) {
-
-      this.alertMessage = true;
-
-    } else {
-
-      // construct new book object
-
-      const newBook = {
-        id: id,
-        bookTitle: this.title,
-        bookDescription: this.description,
-        bookAuthor: this.author,
-        publishDate: this.publishedDate,
-        bookCategory: this.category,
-        isSelected: false
-      }
-      // Send object to service for subbmit
-      this.bookService.addBook(newBook);
+    const newBook = {
+      id: id,
+      bookTitle: this.createForm.value.title,
+      bookDescription: this.createForm.value.description,
+      bookAuthor: this.createForm.value.author,
+      publishDate: this.createForm.value.publishedDate,
+      bookCategory: this.createForm.value.category,
+      isSelected: false
     }
+
+    // Send object to service for subbmit
+
+    this.bookService.addBook(newBook);
+
 
   }
 
   goHome(): void {
     this.bookService.goHome();
+  }
+
+  ngOnInit(): void {
+
   }
 
 }

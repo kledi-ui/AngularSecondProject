@@ -1,6 +1,8 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit , ViewChild} from "@angular/core";
 import { BookServiceService } from '../../services/book-service.service'
+import { DataTableDirective } from 'angular-datatables';
 import { IBook } from 'src/app/models/book';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: "app-table-configuration",
@@ -8,7 +10,12 @@ import { IBook } from 'src/app/models/book';
   styleUrls: ["./table-configuration.component.css"]
 })
 export class TableConfigurationComponent implements OnInit {
+
+  @ViewChild(DataTableDirective, {static: false})
+  dtElement: DataTableDirective;
   dtOptions: DataTables.Settings = {};
+  dtTrigger: Subject<TableConfigurationComponent> = new Subject();
+
   constructor(private bookService: BookServiceService) { }
 
   listOfBooks: IBook[];
@@ -36,13 +43,23 @@ export class TableConfigurationComponent implements OnInit {
           orderable: false
         }
       ],
-
     };
     // Get data from local storage 
     this.listOfBooks = this.bookService.getAllBooks();
 
-
   }
+
+  // Datatable methods
+  ngAfterViewInit(): void {
+    this.dtTrigger.next();
+  }
+
+  ngOnDestroy(): void {
+    // Do not forget to unsubscribe the event
+    this.dtTrigger.unsubscribe();
+  }
+ // Datatable methods
+
   toggleClick(book: IBook): void {
     // change the boolean of object book on toogle
     book.isSelected = !book.isSelected;
@@ -67,19 +84,19 @@ export class TableConfigurationComponent implements OnInit {
       this.listOfBooks = this.bookService.getAllBooks();
       // empty selected books
       this.selectedBooks = [];
+      // render table data
+      this.rerender();
     }
-
   }
-
-
 
   // filtered array after deleting a single record
 
   filteredArray(filteredArray:IBook[]):void{
-    // update list of books on ui
-    this.listOfBooks=filteredArray;
    // set local storage with the new filtered arrays
-    localStorage.setItem('BookStore',JSON.stringify(this.listOfBooks));
+    localStorage.setItem('BookStore',JSON.stringify(filteredArray));
+    this.listOfBooks = this.bookService.getAllBooks();
+    this.rerender();
+    
   }
 
   // filtered array after changing the category on specific records
@@ -87,11 +104,22 @@ export class TableConfigurationComponent implements OnInit {
   filteredArrayCategory(filteredArray:IBook[]):void{
     // update list of books on ui
     this.listOfBooks=filteredArray;
-    // empty selected array list
-    this.selectedBooks = [];
+     // empty selected array list
+     this.selectedBooks = [];
     // set local storage with the new filtered arrays
-    localStorage.setItem('BookStore',JSON.stringify(this.listOfBooks));
-    
+    localStorage.setItem('BookStore',JSON.stringify(filteredArray));
+    this.rerender();
+
+  }
+
+  // Data table rerender method when we make changes on local storage
+  rerender(): void {
+    this.dtElement.dtInstance.then((dtInstance: DataTables.Api) => {
+      // Destroy the table first
+      dtInstance.destroy();
+      // Call the dtTrigger to rerender again
+      this.dtTrigger.next();
+    });
   }
 
 

@@ -95,9 +95,7 @@ export class BookServiceService {
       })
       return book
     })
-
     return filteredArray;
-
   }
 
   // Navigate through code to home route

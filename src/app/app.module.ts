@@ -8,7 +8,7 @@ import { TableConfigurationComponent } from './components/table-configuration/ta
 import { CreateComponent } from './components/pages/create/create.component';
 import { UpdateComponent } from './components/pages/update/update.component';
 import { DeleteSingleComponent } from './components/modals/delete-single/delete-single.component';
-import {FormsModule} from '@angular/forms';
+import {FormsModule,ReactiveFormsModule} from '@angular/forms';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 import { ChangeCategoryComponent } from './components/modals/change-category/change-category.component';
 
@@ -29,7 +29,8 @@ import { ChangeCategoryComponent } from './components/modals/change-category/cha
     AppRoutingModule,
     DataTablesModule,
     FormsModule,
-    NgbModule
+    NgbModule,
+    ReactiveFormsModule
   ],
   providers: [],
   bootstrap: [AppComponent]

@@ -1,24 +1,35 @@
 import { Component, OnInit } from '@angular/core';
 import { BookServiceService } from '../../../services/book-service.service'
 import { ActivatedRoute } from '@angular/router';
+import { FormGroup, FormControl, FormBuilder, Validators } from '@angular/forms';
+
 @Component({
   selector: 'app-update',
   templateUrl: './update.component.html',
   styleUrls: ['./update.component.css']
 })
 export class UpdateComponent implements OnInit {
-  
+
+  title = new FormControl('',[Validators.required])
+  description = new FormControl('',[Validators.required])
+  author = new FormControl('',[Validators.required])
+  publishedDate = new FormControl('',[Validators.required])
+  category = new FormControl('',[Validators.required])
+
   id: string;
-  title: string;
-  description: string;
-  author: string;
-  publishedDate: string;
-  category: string;
   isSelected: boolean;
-  alertMessage: boolean = false;
+
+  updateForm: FormGroup = this.builder.group({
+    title: this.title,
+    description: this.description,
+    author: this.author,
+    publishedDate: this.publishedDate,
+    category: this.category
+  });
 
   constructor(private bookService: BookServiceService,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute, private builder: FormBuilder) {
+  }
 
   ngOnInit(): void {
 
@@ -33,41 +44,31 @@ export class UpdateComponent implements OnInit {
       book.id === id
     );
 
+    // update input forms based on found object
     this.id = id;
-    this.title = found.bookTitle;
-    this.description = found.bookDescription;
-    this.author = found.bookAuthor;
-    this.publishedDate = found.publishDate;
-    this.category = found.bookCategory;
     this.isSelected = found.isSelected;
+    this.updateForm.controls['title'].patchValue(found.bookTitle);
+    this.updateForm.controls['description'].patchValue(found.bookDescription);
+    this.updateForm.controls['author'].patchValue(found.bookAuthor);
+    this.updateForm.controls['publishedDate'].patchValue(found.publishDate);
+    this.updateForm.controls['category'].patchValue(found.bookCategory);
 
   }
 
   updateBook() {
-   
-    // Check if a user leaves an empty input field
-    if (this.title === ''
-      ||
-      this.description === ''
-      || this.author === ''
-      || this.publishedDate === ''
-      || this.category === '') {
 
-      this.alertMessage = true;
-
-    } else{
-      // construct new book object
-      const updatedBook = {
-        id: this.id,
-        bookTitle: this.title,
-        bookDescription: this.description,
-        bookAuthor: this.author,
-        publishDate: this.publishedDate,
-        bookCategory: this.category,
-        isSelected: this.isSelected
-      }
-      this.bookService.updateBook(updatedBook);
+    
+    // construct new book object
+    const updatedBook = {
+      id: this.id,
+      bookTitle: this.updateForm.value.title,
+      bookDescription: this.updateForm.value.description,
+      bookAuthor: this.updateForm.value.author,
+      publishDate: this.updateForm.value.publishedDate,
+      bookCategory: this.updateForm.value.category,
+      isSelected: this.isSelected
     }
+    this.bookService.updateBook(updatedBook);
   }
 
   goHome(): void {
